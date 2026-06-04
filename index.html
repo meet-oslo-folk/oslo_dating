@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Tokens ─────────────────────────────────────────── */
+    :root {
+      --ink:    #1a1612;
+      --paper:  #f5f0e8;
+      --accent: #c0392b;
+      --muted:  #8a8070;
+      --border: #d4cbba;
+      --radius: 4px;
+      --ease:   cubic-bezier(.4,0,.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 2rem 1rem;
+    }
+
+    /* ── Card ───────────────────────────────────────────── */
+    .card {
+      width: 100%;
+      max-width: 520px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,.07);
+    }
+
+    .card-header {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 2.5rem 2.5rem 2rem;
+    }
+
+    .card-header .eyebrow {
+      font-size: .7rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .75rem;
+    }
+
+    .card-header h1 {
+      font-family: 'Fraunces', serif;
+      font-weight: 300;
+      font-size: 2.2rem;
+      line-height: 1.15;
+    }
+
+    .card-header h1 em {
+      font-style: italic;
+      color: #c8b89a;
+    }
+
+    /* ── Form body ──────────────────────────────────────── */
+    .card-body {
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: .45rem;
+    }
+
+    label {
+      font-size: .78rem;
+      font-weight: 500;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    input, select, textarea {
+      font-family: 'DM Sans', sans-serif;
+      font-size: .95rem;
+      color: var(--ink);
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: .75rem 1rem;
+      width: 100%;
+      outline: none;
+      transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--ink);
+      box-shadow: 0 0 0 3px rgba(26,22,18,.08);
+    }
+
+    textarea { resize: vertical; min-height: 110px; }
+
+    /* ── Row of two fields ──────────────────────────────── */
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* ── Submit button ──────────────────────────────────── */
+    .btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: .88rem;
+      font-weight: 500;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      border-radius: var(--radius);
+      padding: .9rem 2rem;
+      background: var(--accent);
+      color: #fff;
+      width: 100%;
+      transition: background .2s var(--ease), transform .15s var(--ease);
+      position: relative;
+    }
+
+    .btn:hover:not(:disabled) { background: #a93226; }
+    .btn:active:not(:disabled) { transform: scale(.98); }
+    .btn:disabled { opacity: .55; cursor: not-allowed; }
+
+    /* ── Status banner ──────────────────────────────────── */
+    .status {
+      display: none;
+      align-items: center;
+      gap: .6rem;
+      font-size: .88rem;
+      padding: .8rem 1rem;
+      border-radius: var(--radius);
+      border: 1px solid transparent;
+    }
+
+    .status.show { display: flex; }
+
+    .status.ok  { background: #eafaf1; border-color: #a9dfbf; color: #1e8449; }
+    .status.err { background: #fdedec; border-color: #f1948a; color: #922b21; }
+
+    .status svg { flex-shrink: 0; }
+
+    /* ── Spinner ────────────────────────────────────────── */
+    .spinner {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border: 2px solid rgba(255,255,255,.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      margin-right: .5rem;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-header">
+    <p class="eyebrow">Get in touch</p>
+    <h1>We'd love to<br><em>hear from you.</em></h1>
+  </div>
+
+  <div class="card-body">
+
+    <!-- Status banner (shown after submit) -->
+    <div class="status" id="status" role="alert"></div>
+
+    <div class="row">
+      <div class="field">
+        <label for="firstName">First name</label>
+        <input id="firstName" name="firstName" type="text" placeholder="Jane" required />
+      </div>
+      <div class="field">
+        <label for="lastName">Last name</label>
+        <input id="lastName" name="lastName" type="text" placeholder="Smith" required />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="email">Email address</label>
+      <input id="email" name="email" type="email" placeholder="jane@example.com" required />
+    </div>
+
+    <div class="field">
+      <label for="phone">Phone (optional)</label>
+      <input id="phone" name="phone" type="tel" placeholder="+1 555 000 0000" />
+    </div>
+
+    <div class="field">
+      <label for="subject">Subject</label>
+      <select id="subject" name="subject">
+        <option value="">— Please select —</option>
+        <option>General enquiry</option>
+        <option>Support</option>
+        <option>Partnerships</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="message">Message</label>
+      <textarea id="message" name="message" placeholder="Tell us what's on your mind…" required></textarea>
+    </div>
+
+    <button class="btn" id="submitBtn" type="button" onclick="submitForm()">
+      Send message
+    </button>
+
+  </div><!-- /.card-body -->
+</div><!-- /.card -->
+
+<script>
+  // ── !! PASTE YOUR DEPLOYED WEB APP URL HERE !! ──────────────
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzm5pFu2DYbt1BhA13MVUmMmDJQF1nihbDtU3eiK2i5YfpiFT1tz5w34xbRfQNj5jk/exec";
+  // ────────────────────────────────────────────────────────────
+
+  async function submitForm() {
+    var btn    = document.getElementById("submitBtn");
+    var status = document.getElementById("status");
+
+    // --- Collect & validate ---
+    var fields = ["firstName", "lastName", "email", "subject", "message"];
+    var data   = {};
+    var missing = [];
+
+    fields.forEach(function(id) {
+      var el = document.getElementById(id);
+      var val = el.value.trim();
+      if (!val) { missing.push(el.previousElementSibling.textContent.trim()); }
+      else { data[el.name] = val; }
+    });
+
+    // Optional field
+    var phone = document.getElementById("phone").value.trim();
+    if (phone) data["phone"] = phone;
+
+    if (missing.length) {
+      showStatus("err", "Please fill in: " + missing.join(", ") + ".");
+      return;
+    }
+
+    if (!isValidEmail(data.email)) {
+      showStatus("err", "Please enter a valid email address.");
+      return;
+    }
+
+    // --- Submit ---
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Sending…';
+    hideStatus();
+
+    try {
+      var res = await fetch(SCRIPT_URL, {
+        method:  "POST",
+        // Apps Script doesn't support application/json pre-flight on no-cors,
+        // so we send as text and parse on the server side.
+        body:    JSON.stringify(data),
+        headers: { "Content-Type": "text/plain" }   // avoids CORS pre-flight
+      });
+
+      // Apps Script returns 302 redirect in no-cors mode;
+      // with regular fetch we read the JSON response.
+      var json = await res.json().catch(function() { return { success: true }; });
+
+      if (json.success !== false) {
+        showStatus("ok", "✓ Message sent! We'll be in touch soon.");
+        clearForm();
+      } else {
+        throw new Error(json.message || "Unknown error");
+      }
+
+    } catch (err) {
+      showStatus("err", "Something went wrong: " + err.message + ". Please try again.");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Send message";
+    }
+  }
+
+  function showStatus(type, msg) {
+    var el = document.getElementById("status");
+    el.className = "status show " + type;
+    el.textContent = msg;
+    el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  function hideStatus() {
+    var el = document.getElementById("status");
+    el.className = "status";
+    el.textContent = "";
+  }
+
+  function clearForm() {
+    ["firstName","lastName","email","phone","subject","message"].forEach(function(id) {
+      document.getElementById(id).value = "";
+    });
+  }
+
+  function isValidEmail(v) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  }
+</script>
+
+</body>
+</html>
