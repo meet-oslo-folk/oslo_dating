@@ -1,320 +1,498 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Serendipity — Blind Connections</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose:   #c0656a;
+    --rose-d: #9b4a4e;
+    --cream:  #fdf6ee;
+    --ink:    #1e1a18;
+    --muted:  #2e2c2c;
+    --gold:   #c8a96e;
+    --border: #e8ddd4;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Lato', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
 
-  <style>
-    /* ── Tokens ─────────────────────────────────────────── */
-    :root {
-      --ink:    #1a1612;
-      --paper:  #f5f0e8;
-      --accent: #c0392b;
-      --muted:  #8a8070;
-      --border: #d4cbba;
-      --radius: 4px;
-      --ease:   cubic-bezier(.4,0,.2,1);
-    }
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(253,246,238,.93);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--rose); letter-spacing: .04em; }
+  .logo span { font-style: italic; }
+  nav ul { list-style: none; display: flex; gap: 2rem; }
+  nav ul a { text-decoration: none; font-size: .82rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); transition: color .2s; }
+  nav ul a:hover { color: var(--rose); }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: 8rem 2rem 5rem;
+    background: radial-gradient(ellipse 80% 55% at 50% 110%, #f2cfd2 0%, var(--cream) 65%);
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='2' fill='%23c0656a' fill-opacity='0.05'/%3E%3C/svg%3E");
+  }
+  .hero-tag { font-size: .7rem; letter-spacing: .22em; text-transform: uppercase; color: var(--rose); background: rgba(192,101,106,.1); padding: .4rem 1.2rem; border-radius: 999px; margin-bottom: 2rem; display: inline-block; position: relative; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6.5rem); line-height: 1.05; max-width: 820px; position: relative; }
+  .hero h1 em { font-style: italic; color: var(--rose); }
+  .hero p { margin-top: 1.8rem; font-size: 1.1rem; font-weight: 300; color: var(--muted); max-width: 500px; line-height: 1.8; position: relative; }
+  .hero-cta { margin-top: 2.8rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; position: relative; }
+  .btn-primary { background: var(--rose); color: #fff; border: none; border-radius: 999px; padding: .9rem 2.4rem; font-family: 'Lato', sans-serif; font-size: .88rem; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; text-decoration: none; transition: background .2s, transform .15s; }
+  .btn-primary:hover { background: var(--rose-d); transform: translateY(-2px); }
+  .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--border); border-radius: 999px; padding: .9rem 2.4rem; font-family: 'Lato', sans-serif; font-size: .88rem; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; text-decoration: none; transition: border-color .2s, color .2s; }
+  .btn-ghost:hover { border-color: var(--rose); color: var(--rose); }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--paper);
-      color: var(--ink);
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 2rem 1rem;
-    }
+  section { padding: 6rem 2rem; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-label { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.2; }
+  .section-title em { font-style: italic; color: var(--rose); }
+  .section-body { font-size: 1rem; font-weight: 300; color: var(--muted); line-height: 1.85; max-width: 600px; margin-top: 1.2rem; }
 
-    /* ── Card ───────────────────────────────────────────── */
-    .card {
-      width: 100%;
-      max-width: 520px;
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: 0 8px 40px rgba(0,0,0,.07);
-    }
+  #about .section-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .about-visual { position: relative; height: 400px; display: flex; align-items: center; justify-content: center; }
+  .ring { position: absolute; border-radius: 50%; border: 1px solid var(--border); }
+  .ring-1 { width: 340px; height: 340px; }
+  .ring-2 { width: 260px; height: 260px; border-color: rgba(192,101,106,.2); }
+  .ring-3 { width: 180px; height: 180px; background: rgba(192,101,106,.06); border: none; }
+  .hearts { font-size: 4rem; animation: pulse 2.4s ease-in-out infinite; position: relative; z-index: 1; }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.14); } }
+  .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.2rem; }
+  .unit-input { position: relative; }
+  .unit-input input { padding-right: 3.2rem; }
+  .unit-badge { position: absolute; right: .9rem; top: 50%; transform: translateY(-50%); font-size: .78rem; color: var(--muted); pointer-events: none; font-weight: 700; letter-spacing: .04em; }
 
-    .card-header {
-      background: var(--ink);
-      color: var(--paper);
-      padding: 2.5rem 2.5rem 2rem;
-    }
+  #mission { background: var(--ink); color: var(--cream); }
+  #mission .section-label { color: var(--gold); }
+  #mission .section-body { color: rgba(253,246,238,.6); max-width: 100%; }
+  .mission-pillars { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; margin-top: 3rem; }
+  .pillar { border-top: 2px solid var(--rose); padding-top: 1.5rem; }
+  .pillar h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: .8rem; color: var(--cream); }
+  .pillar p { font-size: .9rem; font-weight: 300; color: rgba(253,246,238,.58); line-height: 1.75; }
 
-    .card-header .eyebrow {
-      font-size: .7rem;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: .75rem;
-    }
+  #moments { padding: 5rem 2rem; }
+  #moments .section-inner { text-align: center; }
+  .image-strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 3rem; }
+  .moment-card { position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 3/4; box-shadow: 0 16px 48px rgba(0,0,0,.14); }
+  .moment-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; display: block; }
+  .moment-card:hover img { transform: scale(1.05); }
+  .overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(20,14,12,.6) 0%, transparent 55%); }
+  .stick-layer { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 3.5rem; pointer-events: none; }
+  .stick-layer svg { filter: drop-shadow(0 2px 8px rgba(0,0,0,.5)); }
+  .moment-caption { position: absolute; bottom: 1.4rem; left: 0; right: 0; text-align: center; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,.5); }
 
-    .card-header h1 {
-      font-family: 'Fraunces', serif;
-      font-weight: 300;
-      font-size: 2.2rem;
-      line-height: 1.15;
-    }
+  #join { background: linear-gradient(155deg, #fdf6ee 0%, #f7e8e8 100%); }
+  #join .section-inner { max-width: 680px; }
+  .form-card { background: #fff; border: 1px solid var(--border); border-radius: 20px; padding: 3rem; box-shadow: 0 20px 60px rgba(192,101,106,.08); margin-top: 2.5rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  .field { display: flex; flex-direction: column; gap: .45rem; margin-bottom: 1.4rem; }
+  label { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  input, select, textarea { font-family: 'Lato', sans-serif; font-size: .95rem; color: var(--ink); background: var(--cream); border: 1px solid var(--border); border-radius: 8px; padding: .75rem 1rem; width: 100%; outline: none; transition: border-color .2s, box-shadow .2s; -webkit-appearance: none; appearance: none; }
+  input:focus, select:focus, textarea:focus { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(192,101,106,.12); background: #fff; }
+  textarea { resize: vertical; min-height: 90px; }
+  .gender-group { display: flex; gap: .7rem; flex-wrap: wrap; }
+  .gender-btn { flex: 1; min-width: 85px; border: 1.5px solid var(--border); border-radius: 8px; padding: .65rem .5rem; text-align: center; font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; background: var(--cream); color: var(--muted); transition: all .2s; user-select: none; }
+  .gender-btn:hover { border-color: var(--rose); color: var(--rose); }
+  .gender-btn.active { background: var(--rose); color: #fff; border-color: var(--rose); }
+  .form-submit { width: 100%; margin-top: .4rem; font-size: .95rem; padding: 1rem; }
+  .status-banner { display: none; padding: .85rem 1rem; border-radius: 8px; font-size: .88rem; margin-bottom: 1.5rem; border: 1px solid transparent; }
+  .status-banner.ok  { display: block; background: #eafaf1; border-color: #a9dfbf; color: #1e8449; }
+  .status-banner.err { display: block; background: #fdedec; border-color: #f1948a; color: #922b21; }
+  .spinner { display: inline-block; width: 13px; height: 13px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; margin-right: .4rem; vertical-align: middle; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-    .card-header h1 em {
-      font-style: italic;
-      color: #c8b89a;
-    }
+  footer { text-align: center; padding: 2.5rem 2rem; border-top: 1px solid var(--border); font-size: .82rem; color: var(--muted); }
+  footer strong { color: var(--rose); font-family: 'Playfair Display', serif; }
 
-    /* ── Form body ──────────────────────────────────────── */
-    .card-body {
-      padding: 2.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.4rem;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: .45rem;
-    }
-
-    label {
-      font-size: .78rem;
-      font-weight: 500;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    input, select, textarea {
-      font-family: 'DM Sans', sans-serif;
-      font-size: .95rem;
-      color: var(--ink);
-      background: var(--paper);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: .75rem 1rem;
-      width: 100%;
-      outline: none;
-      transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
-    }
-
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--ink);
-      box-shadow: 0 0 0 3px rgba(26,22,18,.08);
-    }
-
-    textarea { resize: vertical; min-height: 110px; }
-
-    /* ── Row of two fields ──────────────────────────────── */
-    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-
-    /* ── Submit button ──────────────────────────────────── */
-    .btn {
-      font-family: 'DM Sans', sans-serif;
-      font-size: .88rem;
-      font-weight: 500;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      cursor: pointer;
-      border: none;
-      border-radius: var(--radius);
-      padding: .9rem 2rem;
-      background: var(--accent);
-      color: #fff;
-      width: 100%;
-      transition: background .2s var(--ease), transform .15s var(--ease);
-      position: relative;
-    }
-
-    .btn:hover:not(:disabled) { background: #a93226; }
-    .btn:active:not(:disabled) { transform: scale(.98); }
-    .btn:disabled { opacity: .55; cursor: not-allowed; }
-
-    /* ── Status banner ──────────────────────────────────── */
-    .status {
-      display: none;
-      align-items: center;
-      gap: .6rem;
-      font-size: .88rem;
-      padding: .8rem 1rem;
-      border-radius: var(--radius);
-      border: 1px solid transparent;
-    }
-
-    .status.show { display: flex; }
-
-    .status.ok  { background: #eafaf1; border-color: #a9dfbf; color: #1e8449; }
-    .status.err { background: #fdedec; border-color: #f1948a; color: #922b21; }
-
-    .status svg { flex-shrink: 0; }
-
-    /* ── Spinner ────────────────────────────────────────── */
-    .spinner {
-      display: inline-block;
-      width: 14px; height: 14px;
-      border: 2px solid rgba(255,255,255,.4);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin .7s linear infinite;
-      margin-right: .5rem;
-      vertical-align: middle;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-  </style>
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    nav ul { gap: 1rem; }
+    #about .section-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .about-visual { height: 260px; }
+    .mission-pillars, .image-strip { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .form-card { padding: 1.6rem; }
+  }
+</style>
 </head>
 <body>
 
-<div class="card">
-  <div class="card-header">
-    <p class="eyebrow">Get in touch</p>
-    <h1>We'd love to<br><em>hear from you.</em></h1>
+<nav>
+  <div class="logo">Oslo<span>Meet</span></div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#mission">Mission</a></li>
+    <li><a href="#moments">Stories</a></li>
+    <li><a href="#join">Join</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <h1>Meet someone<br><em>before</em> you know<br>who they are.</h1>
+  <p>We connect two strangers in Oslo— no photos, no profiles, no algorithms. </p>
+  <div class="hero-cta">
+    <a href="#join" class="btn-primary">Find My Match</a>
+    <a href="#about" class="btn-ghost">Learn More</a>
   </div>
+</section>
 
-  <div class="card-body">
+<section id="about">
+  <div class="section-inner">
+    <div class="about-visual" aria-hidden="true">
+      <div class="ring ring-1"></div>
+      <div class="ring ring-2"></div>
+      <div class="ring ring-3"></div>
+      <div class="hearts">♡</div>
+    </div>
+    <div>
+      <p class="section-label">Who we are</p>
+      <h2 class="section-title">A matchmaker<br>with <em>no eyes.</em></h2>
+      <p class="section-body">We're a small group of friends who have had a good share of experience on dating apps, and we believe our deepest connections were made based on our own efforts. </p>
+      <p class="section-body" style="margin-top:.9rem;">We pair you based on a handful of thoughtful questions and a gut feeling, then coordinate a blind date in a safe public place. Before setting you up, we give the guys date ideas and advice on how to treat the girls on dates :) </p>
+    </div>
+  </div>
+</section>
 
-    <!-- Status banner (shown after submit) -->
-    <div class="status" id="status" role="alert"></div>
-
-    <div class="row">
-      <div class="field">
-        <label for="firstName">First name</label>
-        <input id="firstName" name="firstName" type="text" placeholder="Jane" required />
+<section id="mission">
+  <div class="section-inner">
+    <p class="section-label">Our mission</p>
+    <h2 class="section-title" style="color:var(--cream);">Slow down.<br><em>Take your time.</em></h2>
+    <p class="section-body">Modern dating can feel more competitive and more fast paced than the Wall Street Stock Exchange, but it doesnt need to be. We're aiming to encourage people to connect before they judge. Dating is not a chore.</p>
+    <div class="mission-pillars">
+      <div class="pillar">
+        <h3>Radical Anonymity</h3>
+        <p>No photos. No names. No social links. No AI slop</p>
       </div>
-      <div class="field">
-        <label for="lastName">Last name</label>
-        <input id="lastName" name="lastName" type="text" placeholder="Smith" required />
+      <div class="pillar">
+        <h3>Meaningful Matching</h3>
+        <p>We pair people on values, curiosity, and sense of humour </p>
+      </div>
+      <div class="pillar">
+        <h3>Safe by Design</h3>
+        <p>Every match is coordinated by a human on our team. First meetings are always public. </p>
       </div>
     </div>
+  </div>
+</section>
 
-    <div class="field">
-      <label for="email">Email address</label>
-      <input id="email" name="email" type="email" placeholder="jane@example.com" required />
+<section id="moments">
+  <div class="section-inner">
+    <div class="image-strip">
+
+      <!-- PICNIC -->
+      <div class="moment-card">
+        <img src="eat.jpg" alt="Park by a sunny pond"/>
+        <div class="overlay"></div>
+        <div class="stick-layer">
+          <svg width="180" height="130" viewBox="0 0 180 130" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="90" cy="112" rx="65" ry="11" fill="rgba(255,200,100,.3)" stroke="rgba(255,255,255,.7)" stroke-width="1.5"/>
+            <rect x="74" y="90" width="20" height="16" rx="3" fill="none" stroke="#fff" stroke-width="2"/>
+            <path d="M74 95 Q84 87 94 95" fill="none" stroke="#fff" stroke-width="2"/>
+            <line x1="74" y1="99" x2="94" y2="99" stroke="#fff" stroke-width="1.2" stroke-dasharray="2,2"/>
+            <circle cx="62" cy="97" r="5" fill="rgba(255,120,100,.8)" stroke="#fff" stroke-width="1.5"/>
+            <line x1="62" y1="92" x2="63" y2="89" stroke="#fff" stroke-width="1.5"/>
+            <circle cx="36" cy="60" r="9" fill="none" stroke="#fff" stroke-width="2.2"/>
+            <line x1="36" y1="69" x2="40" y2="90" stroke="#fff" stroke-width="2.2"/>
+            <line x1="38" y1="76" x2="56" y2="88" stroke="#fff" stroke-width="2.2"/>
+            <line x1="38" y1="74" x2="26" y2="64" stroke="#fff" stroke-width="2.2"/>
+            <line x1="40" y1="90" x2="28" y2="108" stroke="#fff" stroke-width="2.2"/>
+            <line x1="40" y1="90" x2="52" y2="106" stroke="#fff" stroke-width="2.2"/>
+            <circle cx="144" cy="58" r="9" fill="none" stroke="#fff" stroke-width="2.2"/>
+            <line x1="144" y1="67" x2="140" y2="88" stroke="#fff" stroke-width="2.2"/>
+            <line x1="142" y1="75" x2="96" y2="90" stroke="#fff" stroke-width="2.2"/>
+            <line x1="142" y1="73" x2="154" y2="64" stroke="#fff" stroke-width="2.2"/>
+            <line x1="140" y1="88" x2="152" y2="107" stroke="#fff" stroke-width="2.2"/>
+            <line x1="140" y1="88" x2="128" y2="105" stroke="#fff" stroke-width="2.2"/>
+            <text x="82" y="46" font-size="15" fill="rgba(255,180,190,.95)" font-family="serif">&#9825;</text>
+            <text x="98" y="38" font-size="10" fill="rgba(255,180,190,.7)"  font-family="serif">&#9825;</text>
+            <text x="70" y="36" font-size="8"  fill="rgba(255,180,190,.5)"  font-family="serif">&#9825;</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- DANCE -->
+      <div class="moment-card">
+        <img src="dance.jpg" alt="Vigeland park lit up at dusk"/>
+        <div class="overlay"></div>
+        <div class="stick-layer">
+          <svg width="180" height="140" viewBox="0 0 180 140" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="64" cy="44" r="9" fill="none" stroke="#fff" stroke-width="2.2"/>
+            <line x1="64" y1="53" x2="68" y2="80" stroke="#fff" stroke-width="2.2"/>
+            <line x1="65" y1="62" x2="90" y2="50" stroke="#fff" stroke-width="2.2"/>
+            <line x1="65" y1="67" x2="88" y2="76" stroke="#fff" stroke-width="2.2"/>
+            <line x1="68" y1="80" x2="52" y2="100" stroke="#fff" stroke-width="2.2"/>
+            <line x1="68" y1="80" x2="80" y2="96" stroke="#fff" stroke-width="2.2"/>
+            <circle cx="116" cy="40" r="9" fill="none" stroke="#fff" stroke-width="2.2"/>
+            <line x1="116" y1="49" x2="112" y2="77" stroke="#fff" stroke-width="2.2"/>
+            <line x1="115" y1="58" x2="90" y2="50" stroke="#fff" stroke-width="2.2"/>
+            <line x1="115" y1="63" x2="92" y2="74" stroke="#fff" stroke-width="2.2"/>
+            <line x1="112" y1="77" x2="124" y2="98" stroke="#fff" stroke-width="2.2"/>
+            <line x1="112" y1="77" x2="100" y2="100" stroke="#fff" stroke-width="2.2"/>
+            <circle cx="90" cy="50" r="4.5" fill="rgba(255,190,200,.7)" stroke="#fff" stroke-width="1.5"/>
+            <text x="130" y="36" font-size="18" fill="rgba(255,230,160,.9)" font-family="serif">&#9834;</text>
+            <text x="34"  y="34" font-size="13" fill="rgba(255,230,160,.8)" font-family="serif">&#9835;</text>
+            <text x="148" y="54" font-size="11" fill="rgba(255,230,160,.6)" font-family="serif">&#9833;</text>
+            <text x="83"  y="26" font-size="16" fill="rgba(255,180,190,.95)" font-family="serif">&#9825;</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- WALK -->
+      <div class="moment-card">
+        <img src="walk.jpg" alt="Karl Johans gate at blue hour"/>
+        <div class="overlay"></div>
+        <div class="stick-layer">
+          <svg width="180" height="140" viewBox="0 0 180 140" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="62" cy="44" r="9" fill="none" stroke="#fff" stroke-width="2.2"/>
+            <line x1="62" y1="53" x2="62" y2="80" stroke="#fff" stroke-width="2.2"/>
+            <line x1="62" y1="62" x2="46" y2="73" stroke="#fff" stroke-width="2.2"/>
+            <line x1="62" y1="62" x2="84" y2="68" stroke="#fff" stroke-width="2.2"/>
+            <line x1="62" y1="80" x2="48" y2="103" stroke="#fff" stroke-width="2.2"/>
+            <line x1="62" y1="80" x2="74" y2="101" stroke="#fff" stroke-width="2.2"/>
+            <circle cx="118" cy="42" r="9" fill="none" stroke="#fff" stroke-width="2.2"/>
+            <line x1="118" y1="51" x2="118" y2="78" stroke="#fff" stroke-width="2.2"/>
+            <line x1="118" y1="60" x2="134" y2="73" stroke="#fff" stroke-width="2.2"/>
+            <line x1="118" y1="60" x2="96" y2="66" stroke="#fff" stroke-width="2.2"/>
+            <line x1="118" y1="78" x2="132" y2="100" stroke="#fff" stroke-width="2.2"/>
+            <line x1="118" y1="78" x2="106" y2="102" stroke="#fff" stroke-width="2.2"/>
+            <circle cx="90" cy="67" r="5" fill="rgba(255,180,180,.75)" stroke="#fff" stroke-width="1.5"/>
+            <text x="83"  y="28" font-size="16" fill="rgba(255,180,190,.95)" font-family="serif">&#9825;</text>
+            <text x="97"  y="20" font-size="11" fill="rgba(255,180,190,.7)"  font-family="serif">&#9825;</text>
+            <text x="70"  y="22" font-size="8"  fill="rgba(255,180,190,.5)"  font-family="serif">&#9825;</text>
+          </svg>
+        </div>
+      </div>
+
     </div>
+  </div>
+</section>
 
-    <div class="field">
-      <label for="phone">Phone (optional)</label>
-      <input id="phone" name="phone" type="tel" placeholder="+1 555 000 0000" />
+<section id="join">
+  <div class="section-inner">
+    <p class="section-label">Find your match</p>
+    <h2 class="section-title">Take the <em>leap</em></h2>
+    <p class="section-body">Fill in a few things about yourself. We read every response personally and reach out when we've found someone genuinely worth meeting. We encourage you to answer every question as freely and specific as you can. </p>
+
+    <div class="form-card">
+      <div class="status-banner" id="formStatus"></div>
+
+      <div class="field">
+        <label>Sex</label>
+        <div class="gender-group" id="sexGroup">
+          <div class="gender-btn" data-value="female" onclick="selectSex(this)">Female</div>
+          <div class="gender-btn" data-value="male"   onclick="selectSex(this)">Male</div>
+        </div>
+        <input type="hidden" id="sex" name="sex"/>
+      </div>
+
+      <div class="field">
+        <label>I'm open to meeting</label>
+        <select id="seeking" name="seeking">
+          <option value="">— Select —</option>
+          <option>Women</option>
+          <option>Men</option>
+          <option>Both</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label>Your age</label>
+          <input type="number" id="age" name="age" min="18" max="99" placeholder="e.g. 24"/>
+        </div>
+
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label>Height</label>
+          <div class="unit-input">
+            <input type="number" id="height" name="height" min="100" max="250" placeholder="e.g. 175"/>
+            <span class="unit-badge">cm</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Weight</label>
+          <div class="unit-input">
+            <input type="number" id="weight" name="weight" min="30" max="300" placeholder="e.g. 70"/>
+            <span class="unit-badge">kg</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Why do you seek a romantic relationship ?</label>
+        <textarea id="q1" name="q1" placeholder="jeg trenger å bli minnet på hvor godt romantisk selskap kan være ..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>How did your last romantic interest make you feel and why did you like them?  </label>
+        <input type="text" id="q2" name="q2" placeholder="Han fikk meg til å føle meg ung .."/>
+      </div>
+
+      <div class="field">
+        <label>What effort did you put into knowing your last date? </label>
+        <textarea id="q3" name="q3" placeholder="'så hva studerer du'    ' . . . '  'kult'"></textarea>
+      </div>
+
+      <div class="field">
+        <label>What positive side of you could't you show on a dating profile ? </label>
+        <textarea id="q4" name="q4" placeholder="Min udødelige ånd og kjærlighet til mat og bøker"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Why is your favourite book/movie/media your favourite ?  </label>
+        <textarea id="q5" name="q5" placeholder="..."></textarea>
+      </div>
+
+
+      <div class="field">
+        <label>What's a dealbreaker you won't compromise on?</label>
+        <input type="text" id="q6" name="q6" placeholder="Jeg dater ikke folk uten jobb as"/>
+      </div>
+
+      <div class="field">
+        <label>What qualities do you look in a partner ? </label>
+        <textarea id="q7" name="q7" placeholder="Vær så nøyaktig og ærlig som du kan "></textarea>
+      </div>
+
+      <div class="field">
+        <label>What qualities will you offer as a partner ? </label>
+        <textarea id="q8" name="q8" placeholder="Vær så nøyaktig og ærlig som du kan "></textarea>
+      </div>
+
+
+      <div class="field">
+        <label>Email address</label>
+        <input type="email" id="email" name="email" placeholder="Vi kontakter deg når vi finner en bra match"/>
+      </div>
+
+      <div class="field">
+        <button class="btn-primary form-submit" id="submitBtn" onclick="submitForm()">
+          Send my profile &#10022;
+        </button>
+      </div>
     </div>
+  </div>
+</section>
 
-    <div class="field">
-      <label for="subject">Subject</label>
-      <select id="subject" name="subject">
-        <option value="">— Please select —</option>
-        <option>General enquiry</option>
-        <option>Support</option>
-        <option>Partnerships</option>
-        <option>Other</option>
-      </select>
-    </div>
-
-    <div class="field">
-      <label for="message">Message</label>
-      <textarea id="message" name="message" placeholder="Tell us what's on your mind…" required></textarea>
-    </div>
-
-    <button class="btn" id="submitBtn" type="button" onclick="submitForm()">
-      Send message
-    </button>
-
-  </div><!-- /.card-body -->
-</div><!-- /.card -->
+<footer>
+  <p>Made with &#9825; by <strong>OsloMeet</strong> &middot; Be patient to others.</p>
+  <p style="margin-top:.4rem;">&copy; 2026 OsloMeet.</p>
+</footer>
 
 <script>
-  // ── !! PASTE YOUR DEPLOYED WEB APP URL HERE !! ──────────────
+  var selectedSex = "";
+
+  function selectSex(el) {
+    document.querySelectorAll(".gender-btn").forEach(function(b) { b.classList.remove("active"); });
+    el.classList.add("active");
+    selectedSex = el.dataset.value;
+    document.getElementById("sex").value = selectedSex;
+  }
+
+  //GOOGLE APPS SCRIPT DEPLOYMENT:
   var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzm5pFu2DYbt1BhA13MVUmMmDJQF1nihbDtU3eiK2i5YfpiFT1tz5w34xbRfQNj5jk/exec";
-  // ────────────────────────────────────────────────────────────
 
   async function submitForm() {
-    var btn    = document.getElementById("submitBtn");
-    var status = document.getElementById("status");
+    var btn      = document.getElementById("submitBtn");
+    var statusEl = document.getElementById("formStatus");
 
-    // --- Collect & validate ---
-    var fields = ["firstName", "lastName", "email", "subject", "message"];
-    var data   = {};
-    var missing = [];
+    //city:    document.getElementById("city").value.trim(),
+    var data = {
+      sex:     selectedSex,
+      seeking: document.getElementById("seeking").value,
+      age:     document.getElementById("age").value.trim(),
 
-    fields.forEach(function(id) {
-      var el = document.getElementById(id);
-      var val = el.value.trim();
-      if (!val) { missing.push(el.previousElementSibling.textContent.trim()); }
-      else { data[el.name] = val; }
-    });
+      height:  document.getElementById("height").value.trim(),
+      weight:  document.getElementById("weight").value.trim(),
+      q1:      document.getElementById("q1").value.trim(),
+      q2:      document.getElementById("q2").value.trim(),
+      q3:      document.getElementById("q3").value.trim(),
+      q4:      document.getElementById("q4").value.trim(),
+      q5:      document.getElementById("q5").value.trim(),
+      q6:      document.getElementById("q6").value.trim(),
+      q7:      document.getElementById("q7").value.trim(),
+      q8:      document.getElementById("q7").value.trim(),
+      email:   document.getElementById("email").value.trim()
+    };
 
-    // Optional field
-    var phone = document.getElementById("phone").value.trim();
-    if (phone) data["phone"] = phone;
+    var errs = [];
+    if (!data.sex)     errs.push("your sex");
+    if (!data.seeking) errs.push("who you're open to meeting");
+    if (!data.age || parseInt(data.age) < 18) errs.push("a valid age (18+)");
+    //if (!data.city)    errs.push("your city");
+    if (!data.height)  errs.push("your height");
+    if (!data.weight)  errs.push("your weight");
+    if (!data.q1)      errs.push("why ? loneliness is not the right answer");
+    if (!data.q2)      errs.push("Why did you like him ? ");
+    if (!data.q3)      errs.push("Effort ? ? ");
+    if (!data.q4)      errs.push("your humor ?");
+    if (!data.q5)      errs.push("favourite book ?");
+    if (!data.q6)      errs.push("a dealbreaker");
+    if (!data.q7)      errs.push("describe her");
+    if (!data.q8)      errs.push("describe you");
+    if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errs.push("a valid email");
 
-    if (missing.length) {
-      showStatus("err", "Please fill in: " + missing.join(", ") + ".");
+    if (errs.length) {
+      showStatus("err", "Please fill in: " + errs.join(", ") + ".");
       return;
     }
 
-    if (!isValidEmail(data.email)) {
-      showStatus("err", "Please enter a valid email address.");
-      return;
-    }
-
-    // --- Submit ---
     btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span>Sending…';
-    hideStatus();
+    btn.innerHTML = '<span class="spinner"></span>Sending...';
+    statusEl.className = "status-banner";
 
     try {
-      var res = await fetch(SCRIPT_URL, {
-        method:  "POST",
-        // Apps Script doesn't support application/json pre-flight on no-cors,
-        // so we send as text and parse on the server side.
-        body:    JSON.stringify(data),
-        headers: { "Content-Type": "text/plain" }   // avoids CORS pre-flight
+      var res  = await fetch(SCRIPT_URL, {
+        method: "POST",
+        body:   JSON.stringify(data),
+        headers: { "Content-Type": "text/plain" }
       });
-
-      // Apps Script returns 302 redirect in no-cors mode;
-      // with regular fetch we read the JSON response.
       var json = await res.json().catch(function() { return { success: true }; });
 
       if (json.success !== false) {
-        showStatus("ok", "✓ Message sent! We'll be in touch soon.");
+        showStatus("ok", "Profile received! We'll be in touch as soon as we find your match.");
         clearForm();
       } else {
         throw new Error(json.message || "Unknown error");
       }
-
     } catch (err) {
       showStatus("err", "Something went wrong: " + err.message + ". Please try again.");
     } finally {
       btn.disabled = false;
-      btn.textContent = "Send message";
+      btn.innerHTML = "Send my profile &#10022;";
     }
   }
 
   function showStatus(type, msg) {
-    var el = document.getElementById("status");
-    el.className = "status show " + type;
+    var el = document.getElementById("formStatus");
     el.textContent = msg;
+    el.className = "status-banner " + type;
     el.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 
-  function hideStatus() {
-    var el = document.getElementById("status");
-    el.className = "status";
-    el.textContent = "";
-  }
-
   function clearForm() {
-    ["firstName","lastName","email","phone","subject","message"].forEach(function(id) {
+    ["seeking","age","height","weight","q1","q2","q3","q4","q5","q6","q7","q8", "email"].forEach(function(id) {
       document.getElementById(id).value = "";
     });
-  }
-
-  function isValidEmail(v) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    document.querySelectorAll(".gender-btn").forEach(function(b) { b.classList.remove("active"); });
+    selectedSex = "";
+    document.getElementById("sex").value = "";
   }
 </script>
-
 </body>
 </html>
