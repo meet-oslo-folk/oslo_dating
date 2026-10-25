@@ -1,130 +1,123 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="no">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Serendipity — Blind Connections</title>
+<title>OsloMeet</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --rose:   #c0656a;
-    --rose-d: #9b4a4e;
+    --rose:   #a3283a;   /* 7:1 on cream, white text on it passes AA */
+    --rose-d: #741a28;
     --cream:  #fdf6ee;
-    --ink:    #1e1a18;
-    --muted:  #2e2c2c;
-    --gold:   #c8a96e;
-    --border: #e8ddd4;
+    --ink:    #1a1514;
+    --muted:  #2b2625;
+    --gold:   #ecd29a;   /* label colour on the dark band */
+    --border: #6e5f57;   /* visible form borders */
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-  body { font-family: 'Lato', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
+  body { font-family: 'Lato', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; line-height: 1.7; }
 
   nav {
     position: fixed; top: 0; width: 100%; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 1.2rem 3rem;
-    background: rgba(253,246,238,.93);
+    padding: 1rem 3rem;
+    background: rgba(253,246,238,.96);
     backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 2px solid var(--ink);
   }
-  .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--rose); letter-spacing: .04em; }
-  .logo span { font-style: italic; }
-  nav ul { list-style: none; display: flex; gap: 2rem; }
-  nav ul a { text-decoration: none; font-size: .82rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); transition: color .2s; }
-  nav ul a:hover { color: var(--rose); }
+  .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--rose); letter-spacing: .04em; font-weight: 700; }
+  .logo span { font-style: italic; font-weight: 400; }
+  .lang { display: flex; border: 2px solid var(--ink); border-radius: 999px; overflow: hidden; }
+  .lang button { font-family: 'Lato', sans-serif; font-size: .8rem; font-weight: 700; letter-spacing: .08em; padding: .4rem 1rem; background: transparent; color: var(--ink); border: none; cursor: pointer; }
+  .lang button[aria-pressed="true"] { background: var(--ink); color: #fff; }
 
   .hero {
-    min-height: 100vh; display: flex; flex-direction: column;
+    min-height: 78vh; display: flex; flex-direction: column;
     align-items: center; justify-content: center; text-align: center;
-    padding: 8rem 2rem 5rem;
-    background: radial-gradient(ellipse 80% 55% at 50% 110%, #f2cfd2 0%, var(--cream) 65%);
-    position: relative; overflow: hidden;
+    padding: 7rem 2rem 4rem;
+    color: #fff;
+    position: relative; isolation: isolate; overflow: hidden;
+    background: #3a3330;
   }
+  /* picture layer: raise --img-brightness to lighten it further (1 = original) */
   .hero::before {
-    content: ''; position: absolute; inset: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='2' fill='%23c0656a' fill-opacity='0.05'/%3E%3C/svg%3E");
+    content: ""; position: absolute; inset: 0; z-index: -2;
+    background: url("image.jpg") center / cover no-repeat;
+    filter: brightness(var(--img-brightness, 1.45)) saturate(1.1);
   }
-  .hero-tag { font-size: .7rem; letter-spacing: .22em; text-transform: uppercase; color: var(--rose); background: rgba(192,101,106,.1); padding: .4rem 1.2rem; border-radius: 999px; margin-bottom: 2rem; display: inline-block; position: relative; }
-  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6.5rem); line-height: 1.05; max-width: 820px; position: relative; }
-  .hero h1 em { font-style: italic; color: var(--rose); }
-  .hero p { margin-top: 1.8rem; font-size: 1.1rem; font-weight: 300; color: var(--muted); max-width: 500px; line-height: 1.8; position: relative; }
-  .hero-cta { margin-top: 2.8rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; position: relative; }
-  .btn-primary { background: var(--rose); color: #fff; border: none; border-radius: 999px; padding: .9rem 2.4rem; font-family: 'Lato', sans-serif; font-size: .88rem; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; text-decoration: none; transition: background .2s, transform .15s; }
-  .btn-primary:hover { background: var(--rose-d); transform: translateY(-2px); }
-  .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--border); border-radius: 999px; padding: .9rem 2.4rem; font-family: 'Lato', sans-serif; font-size: .88rem; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; text-decoration: none; transition: border-color .2s, color .2s; }
-  .btn-ghost:hover { border-color: var(--rose); color: var(--rose); }
+  /* readability overlay on top of the picture */
+  .hero::after {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(rgba(20,14,14,.3), rgba(20,14,14,.45));
+  }
+  .hero-tag { font-size: .78rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: #fff; background: var(--rose); padding: .4rem 1.3rem; border-radius: 999px; margin-bottom: 1.8rem; display: inline-block; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.6rem, 7vw, 5.4rem); line-height: 1.08; max-width: 820px; }
+  .hero h1 { text-shadow: 0 2px 14px rgba(0,0,0,.5); }
+  .hero h1 em { font-style: italic; color: #f7b4bc; }
+  .hero p { margin-top: 1.5rem; font-size: 1.15rem; color: #fff; max-width: 520px; text-shadow: 0 1px 8px rgba(0,0,0,.6); }
+  .hero-cta { margin-top: 2.2rem; }
+  .btn-primary { background: var(--rose); color: #fff; border: 2px solid var(--rose); border-radius: 999px; padding: .9rem 2.4rem; font-family: 'Lato', sans-serif; font-weight: 700; font-size: .9rem; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; text-decoration: none; display: inline-block; transition: background .2s, transform .15s; }
+  .btn-primary:hover { background: var(--rose-d); border-color: var(--rose-d); transform: translateY(-2px); }
+  .btn-primary:disabled { opacity: .7; cursor: wait; transform: none; }
 
-  section { padding: 6rem 2rem; }
-  .section-inner { max-width: 1100px; margin: 0 auto; }
-  .section-label { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
-  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.2; }
+  section { padding: 4.5rem 2rem; }
+  .section-inner { max-width: 1000px; margin: 0 auto; }
+  .section-label { font-size: .75rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--rose); margin-bottom: .8rem; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.9rem, 4vw, 2.8rem); line-height: 1.2; }
   .section-title em { font-style: italic; color: var(--rose); }
-  .section-body { font-size: 1rem; font-weight: 300; color: var(--muted); line-height: 1.85; max-width: 600px; margin-top: 1.2rem; }
+  .section-body { font-size: 1.05rem; color: var(--muted); max-width: 640px; margin-top: 1.1rem; }
 
-  #about .section-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
-  .about-visual { position: relative; height: 400px; display: flex; align-items: center; justify-content: center; }
-  .ring { position: absolute; border-radius: 50%; border: 1px solid var(--border); }
-  .ring-1 { width: 340px; height: 340px; }
-  .ring-2 { width: 260px; height: 260px; border-color: rgba(192,101,106,.2); }
-  .ring-3 { width: 180px; height: 180px; background: rgba(192,101,106,.06); border: none; }
-  .hearts { font-size: 4rem; animation: pulse 2.4s ease-in-out infinite; position: relative; z-index: 1; }
-  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.14); } }
-  .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.2rem; }
-  .unit-input { position: relative; }
-  .unit-input input { padding-right: 3.2rem; }
-  .unit-badge { position: absolute; right: .9rem; top: 50%; transform: translateY(-50%); font-size: .78rem; color: var(--muted); pointer-events: none; font-weight: 700; letter-spacing: .04em; }
+  #about { background: var(--ink); color: #fff; }
+  #about .section-label { color: var(--gold); }
+  #about .section-title em { color: #f4a7b0; }
+  #about .section-body { color: #fff; max-width: 680px; }
+  .pillars { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; margin-top: 2.6rem; }
+  .pillar { border-top: 3px solid #f4a7b0; padding-top: 1.2rem; }
+  .pillar h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: .5rem; color: #fff; }
+  .pillar p { font-size: .98rem; color: #f1e8e0; }
 
-  #mission { background: var(--ink); color: var(--cream); }
-  #mission .section-label { color: var(--gold); }
-  #mission .section-body { color: rgba(253,246,238,.6); max-width: 100%; }
-  .mission-pillars { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; margin-top: 3rem; }
-  .pillar { border-top: 2px solid var(--rose); padding-top: 1.5rem; }
-  .pillar h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: .8rem; color: var(--cream); }
-  .pillar p { font-size: .9rem; font-weight: 300; color: rgba(253,246,238,.58); line-height: 1.75; }
-
-  #moments { padding: 5rem 2rem; }
-  #moments .section-inner { text-align: center; }
-  .image-strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 3rem; }
-  .moment-card { position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 3/4; box-shadow: 0 16px 48px rgba(0,0,0,.14); }
-  .moment-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; display: block; }
-  .moment-card:hover img { transform: scale(1.05); }
-  .overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(20,14,12,.6) 0%, transparent 55%); }
-  .stick-layer { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 3.5rem; pointer-events: none; }
-  .stick-layer svg { filter: drop-shadow(0 2px 8px rgba(0,0,0,.5)); }
-  .moment-caption { position: absolute; bottom: 1.4rem; left: 0; right: 0; text-align: center; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,.5); }
-
-  #join { background: linear-gradient(155deg, #fdf6ee 0%, #f7e8e8 100%); }
+  #join { background: linear-gradient(155deg, #fdf6ee 0%, #f5dfe0 100%); }
   #join .section-inner { max-width: 680px; }
-  .form-card { background: #fff; border: 1px solid var(--border); border-radius: 20px; padding: 3rem; box-shadow: 0 20px 60px rgba(192,101,106,.08); margin-top: 2.5rem; }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-  .field { display: flex; flex-direction: column; gap: .45rem; margin-bottom: 1.4rem; }
-  label { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
-  input, select, textarea { font-family: 'Lato', sans-serif; font-size: .95rem; color: var(--ink); background: var(--cream); border: 1px solid var(--border); border-radius: 8px; padding: .75rem 1rem; width: 100%; outline: none; transition: border-color .2s, box-shadow .2s; -webkit-appearance: none; appearance: none; }
-  input:focus, select:focus, textarea:focus { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(192,101,106,.12); background: #fff; }
-  textarea { resize: vertical; min-height: 90px; }
-  .gender-group { display: flex; gap: .7rem; flex-wrap: wrap; }
-  .gender-btn { flex: 1; min-width: 85px; border: 1.5px solid var(--border); border-radius: 8px; padding: .65rem .5rem; text-align: center; font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; background: var(--cream); color: var(--muted); transition: all .2s; user-select: none; }
-  .gender-btn:hover { border-color: var(--rose); color: var(--rose); }
-  .gender-btn.active { background: var(--rose); color: #fff; border-color: var(--rose); }
-  .form-submit { width: 100%; margin-top: .4rem; font-size: .95rem; padding: 1rem; }
-  .status-banner { display: none; padding: .85rem 1rem; border-radius: 8px; font-size: .88rem; margin-bottom: 1.5rem; border: 1px solid transparent; }
-  .status-banner.ok  { display: block; background: #eafaf1; border-color: #a9dfbf; color: #1e8449; }
-  .status-banner.err { display: block; background: #fdedec; border-color: #f1948a; color: #922b21; }
-  .spinner { display: inline-block; width: 13px; height: 13px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; margin-right: .4rem; vertical-align: middle; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .form-card { background: #fff; border: 2px solid var(--ink); border-radius: 20px; padding: 2.6rem; box-shadow: 0 20px 60px rgba(163,40,58,.12); margin-top: 2rem; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.1rem; }
+  .field { display: flex; flex-direction: column; gap: .45rem; margin-bottom: 1.3rem; border: none; }
+  label, legend { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); padding: 0; }
+  input[type=text], input[type=number], input[type=email], select, textarea {
+    font-family: 'Lato', sans-serif; font-size: 1rem; color: var(--ink); background: #fff;
+    border: 2px solid var(--border); border-radius: 8px; padding: .7rem .95rem; width: 100%; outline: none;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  select { appearance: auto; }
+  input:focus, select:focus, textarea:focus { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(163,40,58,.25); }
+  .lang button:focus-visible, .btn-primary:focus-visible, .gender-btn input:focus-visible + span { outline: 3px solid var(--rose); outline-offset: 2px; }
+  textarea { resize: vertical; min-height: 84px; }
+  ::placeholder { color: #5a504b; opacity: 1; }
+  .gender-group { display: flex; gap: .7rem; }
+  .gender-btn { flex: 1; position: relative; }
+  .gender-btn input { position: absolute; opacity: 0; }
+  .gender-btn span { display: block; text-align: center; border: 2px solid var(--border); border-radius: 8px; padding: .65rem; font-size: .85rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; color: var(--ink); background: #fff; }
+  .gender-btn span:hover { border-color: var(--rose); color: var(--rose); }
+  .gender-btn input:checked + span { background: var(--rose); border-color: var(--rose); color: #fff; }
+  .note { font-size: .9rem; color: var(--muted); }
+  .form-submit { width: 100%; font-size: .95rem; padding: 1rem; }
+  #formStatus { display: none; padding: .85rem 1rem; border-radius: 8px; font-size: .95rem; font-weight: 700; margin-bottom: 1.3rem; border: 2px solid; }
+  #formStatus.ok  { display: block; background: #e6f4ea; border-color: #0b5d1e; color: #0b4a18; }
+  #formStatus.err { display: block; background: #fdeaea; border-color: #9b1111; color: #7a0c0c; }
 
-  footer { text-align: center; padding: 2.5rem 2rem; border-top: 1px solid var(--border); font-size: .82rem; color: var(--muted); }
+  footer { text-align: center; padding: 1.8rem 2rem; border-top: 2px solid var(--ink); font-size: .9rem; color: var(--muted); }
+  .contact { font-size: 1rem; color: var(--ink); margin-bottom: .5rem; }
+  .contact a { color: var(--rose); font-weight: 700; }
   footer strong { color: var(--rose); font-family: 'Playfair Display', serif; }
 
   @media (max-width: 768px) {
-    nav { padding: 1rem 1.5rem; }
-    nav ul { gap: 1rem; }
-    #about .section-inner { grid-template-columns: 1fr; gap: 2.5rem; }
-    .about-visual { height: 260px; }
-    .mission-pillars, .image-strip { grid-template-columns: 1fr; }
-    .form-row { grid-template-columns: 1fr; }
-    .form-card { padding: 1.6rem; }
+    nav { padding: .9rem 1.2rem; }
+    section { padding: 3.5rem 1.4rem; }
+    .pillars { grid-template-columns: 1fr; gap: 1.6rem; }
+    .row3 { grid-template-columns: 1fr; gap: 0; }
+    .form-card { padding: 1.5rem; }
   }
 </style>
 </head>
@@ -132,329 +125,265 @@
 
 <nav>
   <div class="logo">Oslo<span>Meet</span></div>
-  <ul>
-    <li><a href="#about">About</a></li>
-    <li><a href="#mission">Mission</a></li>
-    <li><a href="#moments">Stories</a></li>
-    <li><a href="#join">Join</a></li>
-  </ul>
+  <div class="lang" role="group" aria-label="Språk / Language">
+    <button type="button" data-lang="no" aria-pressed="true">NO</button>
+    <button type="button" data-lang="en" aria-pressed="false">EN</button>
+  </div>
 </nav>
 
-<section class="hero">
-  <h1>Meet someone<br><em>before</em> you know<br>who they are.</h1>
-  <p>We connect two strangers in Oslo— no photos, no profiles, no algorithms. </p>
-  <div class="hero-cta">
-    <a href="#join" class="btn-primary">Find My Match</a>
-    <a href="#about" class="btn-ghost">Learn More</a>
-  </div>
-</section>
+<header class="hero">
+  <span class="hero-tag" data-i18n="tag"></span>
+  <h1><span data-i18n="h1a"></span><br><em data-i18n="h1b"></em></h1>
+  <p data-i18n="heroP"></p>
+  <div class="hero-cta"><a href="#join" class="btn-primary" data-i18n="cta"></a></div>
+</header>
 
 <section id="about">
   <div class="section-inner">
-    <div class="about-visual" aria-hidden="true">
-      <div class="ring ring-1"></div>
-      <div class="ring ring-2"></div>
-      <div class="ring ring-3"></div>
-      <div class="hearts">♡</div>
-    </div>
-    <div>
-      <p class="section-label">Who we are</p>
-      <h2 class="section-title">A matchmaker<br>with <em>no eyes.</em></h2>
-      <p class="section-body">We're a small group of friends who have had a good share of experience on dating apps, and we believe our deepest connections were made based on our own efforts. </p>
-      <p class="section-body" style="margin-top:.9rem;">We pair you based on a handful of thoughtful questions and a gut feeling, then coordinate a blind date in a safe public place. Before setting you up, we give the guys date ideas and advice on how to treat the girls on dates :) </p>
-    </div>
-  </div>
-</section>
-
-<section id="mission">
-  <div class="section-inner">
-    <p class="section-label">Our mission</p>
-    <h2 class="section-title" style="color:var(--cream);">Slow down.<br><em>Take your time.</em></h2>
-    <p class="section-body">Modern dating can feel more competitive and more fast paced than the Wall Street Stock Exchange, but it doesnt need to be. We're aiming to encourage people to connect before they judge. Dating is not a chore.</p>
-    <div class="mission-pillars">
-      <div class="pillar">
-        <h3>Radical Anonymity</h3>
-        <p>No photos. No names. No social links. No AI slop</p>
-      </div>
-      <div class="pillar">
-        <h3>Meaningful Matching</h3>
-        <p>We pair people on values, curiosity, and sense of humour </p>
-      </div>
-      <div class="pillar">
-        <h3>Safe by Design</h3>
-        <p>Every match is coordinated by a human on our team. First meetings are always public. </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="moments">
-  <div class="section-inner">
-    <div class="image-strip">
-
-      <!-- PICNIC -->
-      <div class="moment-card">
-        <img src="eat.jpg" alt="Park by a sunny pond"/>
-        <div class="overlay"></div>
-        <div class="stick-layer">
-          <svg width="180" height="130" viewBox="0 0 180 130" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="90" cy="112" rx="65" ry="11" fill="rgba(255,200,100,.3)" stroke="rgba(255,255,255,.7)" stroke-width="1.5"/>
-            <rect x="74" y="90" width="20" height="16" rx="3" fill="none" stroke="#fff" stroke-width="2"/>
-            <path d="M74 95 Q84 87 94 95" fill="none" stroke="#fff" stroke-width="2"/>
-            <line x1="74" y1="99" x2="94" y2="99" stroke="#fff" stroke-width="1.2" stroke-dasharray="2,2"/>
-            <circle cx="62" cy="97" r="5" fill="rgba(255,120,100,.8)" stroke="#fff" stroke-width="1.5"/>
-            <line x1="62" y1="92" x2="63" y2="89" stroke="#fff" stroke-width="1.5"/>
-            <circle cx="36" cy="60" r="9" fill="none" stroke="#fff" stroke-width="2.2"/>
-            <line x1="36" y1="69" x2="40" y2="90" stroke="#fff" stroke-width="2.2"/>
-            <line x1="38" y1="76" x2="56" y2="88" stroke="#fff" stroke-width="2.2"/>
-            <line x1="38" y1="74" x2="26" y2="64" stroke="#fff" stroke-width="2.2"/>
-            <line x1="40" y1="90" x2="28" y2="108" stroke="#fff" stroke-width="2.2"/>
-            <line x1="40" y1="90" x2="52" y2="106" stroke="#fff" stroke-width="2.2"/>
-            <circle cx="144" cy="58" r="9" fill="none" stroke="#fff" stroke-width="2.2"/>
-            <line x1="144" y1="67" x2="140" y2="88" stroke="#fff" stroke-width="2.2"/>
-            <line x1="142" y1="75" x2="96" y2="90" stroke="#fff" stroke-width="2.2"/>
-            <line x1="142" y1="73" x2="154" y2="64" stroke="#fff" stroke-width="2.2"/>
-            <line x1="140" y1="88" x2="152" y2="107" stroke="#fff" stroke-width="2.2"/>
-            <line x1="140" y1="88" x2="128" y2="105" stroke="#fff" stroke-width="2.2"/>
-            <text x="82" y="46" font-size="15" fill="rgba(255,180,190,.95)" font-family="serif">&#9825;</text>
-            <text x="98" y="38" font-size="10" fill="rgba(255,180,190,.7)"  font-family="serif">&#9825;</text>
-            <text x="70" y="36" font-size="8"  fill="rgba(255,180,190,.5)"  font-family="serif">&#9825;</text>
-          </svg>
-        </div>
-      </div>
-
-      <!-- DANCE -->
-      <div class="moment-card">
-        <img src="dance.jpg" alt="Vigeland park lit up at dusk"/>
-        <div class="overlay"></div>
-        <div class="stick-layer">
-          <svg width="180" height="140" viewBox="0 0 180 140" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="64" cy="44" r="9" fill="none" stroke="#fff" stroke-width="2.2"/>
-            <line x1="64" y1="53" x2="68" y2="80" stroke="#fff" stroke-width="2.2"/>
-            <line x1="65" y1="62" x2="90" y2="50" stroke="#fff" stroke-width="2.2"/>
-            <line x1="65" y1="67" x2="88" y2="76" stroke="#fff" stroke-width="2.2"/>
-            <line x1="68" y1="80" x2="52" y2="100" stroke="#fff" stroke-width="2.2"/>
-            <line x1="68" y1="80" x2="80" y2="96" stroke="#fff" stroke-width="2.2"/>
-            <circle cx="116" cy="40" r="9" fill="none" stroke="#fff" stroke-width="2.2"/>
-            <line x1="116" y1="49" x2="112" y2="77" stroke="#fff" stroke-width="2.2"/>
-            <line x1="115" y1="58" x2="90" y2="50" stroke="#fff" stroke-width="2.2"/>
-            <line x1="115" y1="63" x2="92" y2="74" stroke="#fff" stroke-width="2.2"/>
-            <line x1="112" y1="77" x2="124" y2="98" stroke="#fff" stroke-width="2.2"/>
-            <line x1="112" y1="77" x2="100" y2="100" stroke="#fff" stroke-width="2.2"/>
-            <circle cx="90" cy="50" r="4.5" fill="rgba(255,190,200,.7)" stroke="#fff" stroke-width="1.5"/>
-            <text x="130" y="36" font-size="18" fill="rgba(255,230,160,.9)" font-family="serif">&#9834;</text>
-            <text x="34"  y="34" font-size="13" fill="rgba(255,230,160,.8)" font-family="serif">&#9835;</text>
-            <text x="148" y="54" font-size="11" fill="rgba(255,230,160,.6)" font-family="serif">&#9833;</text>
-            <text x="83"  y="26" font-size="16" fill="rgba(255,180,190,.95)" font-family="serif">&#9825;</text>
-          </svg>
-        </div>
-      </div>
-
-      <!-- WALK -->
-      <div class="moment-card">
-        <img src="walk.jpg" alt="Karl Johans gate at blue hour"/>
-        <div class="overlay"></div>
-        <div class="stick-layer">
-          <svg width="180" height="140" viewBox="0 0 180 140" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="62" cy="44" r="9" fill="none" stroke="#fff" stroke-width="2.2"/>
-            <line x1="62" y1="53" x2="62" y2="80" stroke="#fff" stroke-width="2.2"/>
-            <line x1="62" y1="62" x2="46" y2="73" stroke="#fff" stroke-width="2.2"/>
-            <line x1="62" y1="62" x2="84" y2="68" stroke="#fff" stroke-width="2.2"/>
-            <line x1="62" y1="80" x2="48" y2="103" stroke="#fff" stroke-width="2.2"/>
-            <line x1="62" y1="80" x2="74" y2="101" stroke="#fff" stroke-width="2.2"/>
-            <circle cx="118" cy="42" r="9" fill="none" stroke="#fff" stroke-width="2.2"/>
-            <line x1="118" y1="51" x2="118" y2="78" stroke="#fff" stroke-width="2.2"/>
-            <line x1="118" y1="60" x2="134" y2="73" stroke="#fff" stroke-width="2.2"/>
-            <line x1="118" y1="60" x2="96" y2="66" stroke="#fff" stroke-width="2.2"/>
-            <line x1="118" y1="78" x2="132" y2="100" stroke="#fff" stroke-width="2.2"/>
-            <line x1="118" y1="78" x2="106" y2="102" stroke="#fff" stroke-width="2.2"/>
-            <circle cx="90" cy="67" r="5" fill="rgba(255,180,180,.75)" stroke="#fff" stroke-width="1.5"/>
-            <text x="83"  y="28" font-size="16" fill="rgba(255,180,190,.95)" font-family="serif">&#9825;</text>
-            <text x="97"  y="20" font-size="11" fill="rgba(255,180,190,.7)"  font-family="serif">&#9825;</text>
-            <text x="70"  y="22" font-size="8"  fill="rgba(255,180,190,.5)"  font-family="serif">&#9825;</text>
-          </svg>
-        </div>
-      </div>
-
+    <p class="section-label" data-i18n="aboutLabel"></p>
+    <h2 class="section-title"><span data-i18n="aboutT1"></span> <em data-i18n="aboutT2"></em></h2>
+    <p class="section-body" data-i18n="about1"></p>
+    <p class="section-body" data-i18n="about2"></p>
+    <div class="pillars">
+      <div class="pillar"><h3 data-i18n="p1h"></h3><p data-i18n="p1"></p></div>
+      <div class="pillar"><h3 data-i18n="p2h"></h3><p data-i18n="p2"></p></div>
+      <div class="pillar"><h3 data-i18n="p3h"></h3><p data-i18n="p3"></p></div>
     </div>
   </div>
 </section>
 
 <section id="join">
   <div class="section-inner">
-    <p class="section-label">Find your match</p>
-    <h2 class="section-title">Take the <em>leap</em></h2>
-    <p class="section-body">Fill in a few things about yourself. We read every response personally and reach out when we've found someone genuinely worth meeting. We encourage you to answer every question as freely and specific as you can. </p>
+    <p class="section-label" data-i18n="joinLabel"></p>
+    <h2 class="section-title"><span data-i18n="joinT1"></span> <em data-i18n="joinT2"></em></h2>
+    <p class="section-body" data-i18n="joinP"></p>
 
-    <div class="form-card">
-      <div class="status-banner" id="formStatus"></div>
+    <form class="form-card" id="profileForm" novalidate onsubmit="submitForm(); return false;">
+      <div id="formStatus" role="status"></div>
 
-      <div class="field">
-        <label>Sex</label>
-        <div class="gender-group" id="sexGroup">
-          <div class="gender-btn" data-value="female" onclick="selectSex(this)">Female</div>
-          <div class="gender-btn" data-value="male"   onclick="selectSex(this)">Male</div>
+      <fieldset class="field">
+        <legend data-i18n="sex"></legend>
+        <div class="gender-group">
+          <label class="gender-btn"><input type="radio" name="sex" value="female"/><span data-i18n="female"></span></label>
+          <label class="gender-btn"><input type="radio" name="sex" value="male"/><span data-i18n="male"></span></label>
         </div>
-        <input type="hidden" id="sex" name="sex"/>
-      </div>
+      </fieldset>
 
       <div class="field">
-        <label>I'm open to meeting</label>
+        <label for="seeking" data-i18n="seeking"></label>
         <select id="seeking" name="seeking">
-          <option value="">— Select —</option>
-          <option>Women</option>
-          <option>Men</option>
-          <option>Both</option>
+          <option value="" data-i18n="select"></option>
+          <option value="Women" data-i18n="women"></option>
+          <option value="Men" data-i18n="men"></option>
+          <option value="Both" data-i18n="both"></option>
         </select>
       </div>
 
-      <div class="form-row">
+      <div class="row3">
         <div class="field">
-          <label>Your age</label>
-          <input type="number" id="age" name="age" min="18" max="99" placeholder="e.g. 24"/>
-        </div>
-
-      </div>
-
-      <div class="form-row">
-        <div class="field">
-          <label>Height</label>
-          <div class="unit-input">
-            <input type="number" id="height" name="height" min="100" max="250" placeholder="e.g. 175"/>
-            <span class="unit-badge">cm</span>
-          </div>
+          <label for="age" data-i18n="age"></label>
+          <input type="number" id="age" name="age" min="18" max="99" data-i18n-ph="agePh"/>
         </div>
         <div class="field">
-          <label>Weight</label>
-          <div class="unit-input">
-            <input type="number" id="weight" name="weight" min="30" max="300" placeholder="e.g. 70"/>
-            <span class="unit-badge">kg</span>
-          </div>
+          <label for="height" data-i18n="height"></label>
+          <input type="number" id="height" name="height" min="100" max="250" data-i18n-ph="heightPh"/>
+        </div>
+        <div class="field">
+          <label for="weight" data-i18n="weight"></label>
+          <input type="number" id="weight" name="weight" min="30" max="300" data-i18n-ph="weightPh"/>
         </div>
       </div>
 
-      <div class="field">
-        <label>Why do you seek a romantic relationship ?</label>
-        <textarea id="q1" name="q1" placeholder="jeg trenger å bli minnet på hvor godt romantisk selskap kan være ..."></textarea>
-      </div>
+      <div class="field"><label for="q1" data-i18n="q1"></label><textarea id="q1" name="q1" data-i18n-ph="q1Ph"></textarea></div>
+      <div class="field"><label for="q2" data-i18n="q2"></label><textarea id="q2" name="q2" data-i18n-ph="q2Ph"></textarea></div>
+      <div class="field"><label for="q3" data-i18n="q3"></label><textarea id="q3" name="q3" data-i18n-ph="q3Ph"></textarea></div>
+      <div class="field"><label for="q4" data-i18n="q4"></label><textarea id="q4" name="q4" data-i18n-ph="q4Ph"></textarea></div>
+      <div class="field"><label for="q5" data-i18n="q5"></label><textarea id="q5" name="q5" data-i18n-ph="q5Ph"></textarea></div>
+      <div class="field"><label for="q6" data-i18n="q6"></label><input type="text" id="q6" name="q6" data-i18n-ph="q6Ph"/></div>
+      <div class="field"><label for="q7" data-i18n="q7"></label><textarea id="q7" name="q7" data-i18n-ph="honestPh"></textarea></div>
+      <div class="field"><label for="q8" data-i18n="q8"></label><textarea id="q8" name="q8" data-i18n-ph="honestPh"></textarea></div>
 
       <div class="field">
-        <label>How did your last romantic interest make you feel and why did you like them?  </label>
-        <input type="text" id="q2" name="q2" placeholder="Han fikk meg til å føle meg ung .."/>
+        <label for="email" data-i18n="email"></label>
+        <input type="email" id="email" name="email" autocomplete="email" data-i18n-ph="emailPh"/>
+        <p class="note" data-i18n="emailNote"></p>
       </div>
 
-      <div class="field">
-        <label>What effort did you put into knowing your last date? </label>
-        <textarea id="q3" name="q3" placeholder="'så hva studerer du'    ' . . . '  'kult'"></textarea>
-      </div>
-
-      <div class="field">
-        <label>What positive side of you could't you show on a dating profile ? </label>
-        <textarea id="q4" name="q4" placeholder="Min udødelige ånd og kjærlighet til mat og bøker"></textarea>
-      </div>
-
-      <div class="field">
-        <label>Why is your favourite book/movie/media your favourite ?  </label>
-        <textarea id="q5" name="q5" placeholder="..."></textarea>
-      </div>
-
-
-      <div class="field">
-        <label>What's a dealbreaker you won't compromise on?</label>
-        <input type="text" id="q6" name="q6" placeholder="Jeg dater ikke folk uten jobb as"/>
-      </div>
-
-      <div class="field">
-        <label>What qualities do you look in a partner ? </label>
-        <textarea id="q7" name="q7" placeholder="Vær så nøyaktig og ærlig som du kan "></textarea>
-      </div>
-
-      <div class="field">
-        <label>What qualities will you offer as a partner ? </label>
-        <textarea id="q8" name="q8" placeholder="Vær så nøyaktig og ærlig som du kan "></textarea>
-      </div>
-
-
-      <div class="field">
-        <label>Email address</label>
-        <input type="email" id="email" name="email" placeholder="Vi kontakter deg når vi finner en bra match"/>
-      </div>
-
-      <div class="field">
-        <button class="btn-primary form-submit" id="submitBtn" onclick="submitForm()">
-          Send my profile &#10022;
-        </button>
-      </div>
-    </div>
+      <button type="submit" class="btn-primary form-submit" id="submitBtn"></button>
+    </form>
   </div>
 </section>
 
 <footer>
-  <p>Made with &#9825; by <strong>OsloMeet</strong> &middot; Be patient to others.</p>
-  <p style="margin-top:.4rem;">&copy; 2026 OsloMeet.</p>
+  <p class="contact"><span data-i18n="contact"></span> <a href="mailto:meet.oslo.folk@gmail.com">meet.oslo.folk@gmail.com</a></p>
+  <p><strong>OsloMeet</strong> &middot; <span data-i18n="footer"></span></p>
 </footer>
 
 <script>
-  var selectedSex = "";
+  var I18N = {
+    no: {
+      tag: "Helt gratis",
+      h1a: "Møt noen", h1b: "før du vet hvem de er.",
+      heroP: "Du skriver om deg selv og hva du leter etter. Vi matcher for hånd og tar kontakt. Ingen bilder, ingen algoritmer, ingen betaling, ingen forpliktelse",
+      cta: "Finn min match",
+      aboutLabel: "Om initiativet og oppdraget",
+      aboutT1: "En matchmaker", aboutT2: "uten øyne.",
+      about1: "Vi er en liten gruppe venner med god erfaring fra datingapper i Oslo område, og vi tror de dypeste forbindelsene bygges gjennom egen innsats. Dating har blitt mer stressende og konkurransepreget enn aksjemarkedet, Det trenger ikke å være slik.",
+      about2: "Du fyller ut skjemaet, vi leser alt selv, matcher deltakerne manuelt og kontakter dere igjen. Første møte avtales på et offentlig sted.",
+      p1h: "Ord før bilder", p1: "Ingen bilder, ingen sosiale lenker. Du blir kjent gjennom svarene dine.",
+      p2h: "Ekte matching", p2: "Vi matcher på verdier, nysgjerrighet og humor, og gjør det for hånd.",
+      p3h: "Trygt og gratis", p3: "Et menneske følger opp hver match. Det koster ingenting å delta. Dersom det skulle gjelde: Vi skal gi guttene ideer til dater og råd om hvordan de bør behandle jentene på date :).",
+      joinLabel: "Finn din match",
+      joinT1: "Ta", joinT2: "steget",
+      joinP: "Svar så åpent og konkret du kan, på norsk eller engelsk. Vi tar kontakt når vi har funnet noen som er verdt å møte.",
+      sex: "Kjønn", female: "Kvinne", male: "Mann",
+      seeking: "Jeg er åpen for å møte", select: "Velg …", women: "Kvinner", men: "Menn", both: "Begge",
+      age: "Alder", agePh: "f.eks. 24",
+      height: "Høyde (cm)", heightPh: "f.eks. 175",
+      weight: "Vekt (kg)", weightPh: "f.eks. 70",
+      q1: "Hvorfor ønsker du et romantisk forhold?",
+      q1Ph: "Jeg trenger å bli minnet på hvor godt romantisk selskap kan være …",
+      q2: "Hvordan fikk din siste romantiske interesse deg til å føle deg, og hvorfor likte(/ikke) du vedkommende?",
+      q2Ph: "Han fikk meg til å føle meg ung …",
+      q3: "Hvilken innsats la du ned i å bli kjent med din siste date?",
+      q3Ph: "«Så hva studerer du?» «…» «Kult»",
+      q4: "Hvilken positiv side ved deg kan du ikke vise frem på en datingprofil?",
+      q4Ph: "Min udødelige kjærlighet til mat og bøker",
+      q5: "Hvorfor er favorittboken, -filmen eller -mediet ditt favoritten din?",
+      q5Ph: "…",
+      q6: "Hva er en aboslutt dealbreaker for deg?",
+      q6Ph: "Jeg dater ikke folk uten jobb as",
+      q7: "Hvilke egenskaper leter du etter hos en partner?",
+      q8: "Hvilke egenskaper kan du tilby som en partner?",
+      honestPh: "Vær så nøyaktig og ærlig som du kan",
+      email: "E-postadresse", emailPh: "navn@eksempel.no",
+      emailNote: "Vi bruker e-posten kun til å kontakte deg om en match.",
+      submit: "Send inn profilen", sending: "Sender …",
+      contact: "Har du spørsmål? Send en e-post til",
+      footer: "© 2026 · Gratis og drevet av frivillige · Vis tålmodighet med andre.",
+      errPrefix: "Vennligst fyll inn: ",
+      errs: { sex: "kjønn", seeking: "hvem du er åpen for å møte", age: "en gyldig alder (18+)", height: "høyde", weight: "vekt",
+              q1: "hvorfor du ønsker et forhold", q2: "forrige romantiske interesse", q3: "innsats på forrige date",
+              q4: "din positive side", q5: "favorittmedie", q6: "et brudd på avtalen", q7: "hva du leter etter", q8: "hva du kan tilby",
+              email: "en gyldig e-postadresse" },
+      ok: "Profilen er mottatt! Vi tar kontakt så snart vi har funnet en match.",
+      fail: "Noe gikk galt: {m}. Prøv igjen."
+    },
+    en: {
+      tag: "Completely free",
+      h1a: "Meet someone", h1b: "before you know who they are.",
+      heroP: "You write about yourself and what you're looking for. We match by hand and get in touch. No photos, no algorithms, no payment.",
+      cta: "Find my match",
+      aboutLabel: "About the initiative and our mission",
+      aboutT1: "A matchmaker", aboutT2: "with no eyes.",
+      about1: "We're a small group of friends with plenty of dating-app experience in Oslo, and we believe the deepest connections are built through your own effort. Dating has become faster and more competitive than the stock market. It doesn't have to be.",
+      about2: "You fill in the form, we read everything ourselves, match participants manually and contact you again. The first meeting is arranged in a public place.",
+      p1h: "Words before photos", p1: "No photos, no social links. You get to know people through their answers.",
+      p2h: "Real matching", p2: "We match on values, curiosity and sense of humour, and we do it by hand.",
+      p3h: "Safe and free", p3: "A real person follows up every match. It costs nothing to take part. We'll give the guys date ideas and advice on how to treat the girls on dates :)",
+      joinLabel: "Find your match",
+      joinT1: "Take the", joinT2: "leap",
+      joinP: "Answer as openly and specifically as you can, in Norwegian or English. We'll get in touch when we find someone worth meeting.",
+      sex: "Sex", female: "Female", male: "Male",
+      seeking: "I'm open to meeting", select: "Select …", women: "Women", men: "Men", both: "Both",
+      age: "Age", agePh: "e.g. 24",
+      height: "Height (cm)", heightPh: "e.g. 175",
+      weight: "Weight (kg)", weightPh: "e.g. 70",
+      q1: "Why do you seek a romantic relationship?",
+      q1Ph: "I need to be reminded how good romantic company can be …",
+      q2: "How did your last romantic interest make you feel, and why did you like (/didn't like) them?",
+      q2Ph: "He made me feel young …",
+      q3: "What effort did you put into getting to know your last date?",
+      q3Ph: "\"So what do you study?\" \"…\" \"Cool\"",
+      q4: "What positive side of you couldn't you show on a dating profile?",
+      q4Ph: "My immortal spirit and love of food and books",
+      q5: "Why is your favourite book, movie or media your favourite?",
+      q5Ph: "…",
+      q6: "What's a dealbreaker you won't compromise on?",
+      q6Ph: "I don't date people without a job",
+      q7: "What qualities do you look for in a partner?",
+      q8: "What qualities can you offer as a partner?",
+      honestPh: "Be as precise and honest as you can",
+      email: "Email address", emailPh: "name@example.com",
+      emailNote: "We only use your email to contact you about a match.",
+      submit: "Send my profile", sending: "Sending …",
+      contact: "For any questions, send an email to",
+      footer: "© 2026 · Free and run by volunteers · Be patient with others.",
+      errPrefix: "Please fill in: ",
+      errs: { sex: "your sex", seeking: "who you're open to meeting", age: "a valid age (18+)", height: "your height", weight: "your weight",
+              q1: "why you seek a relationship", q2: "your last romantic interest", q3: "effort on your last date",
+              q4: "your positive side", q5: "your favourite media", q6: "a dealbreaker", q7: "what you look for", q8: "what you offer",
+              email: "a valid email address" },
+      ok: "Profile received! We'll be in touch as soon as we find your match.",
+      fail: "Something went wrong: {m}. Please try again."
+    }
+  };
 
-  function selectSex(el) {
-    document.querySelectorAll(".gender-btn").forEach(function(b) { b.classList.remove("active"); });
-    el.classList.add("active");
-    selectedSex = el.dataset.value;
-    document.getElementById("sex").value = selectedSex;
+  var lang = "no";
+
+  function t(key) { return I18N[lang][key]; }
+
+  function applyLang(l) {
+    lang = l;
+    document.documentElement.lang = l;
+    document.querySelectorAll("[data-i18n]").forEach(function(el) { el.textContent = t(el.dataset.i18n); });
+    document.querySelectorAll("[data-i18n-ph]").forEach(function(el) { el.placeholder = t(el.dataset.i18nPh); });
+    document.querySelectorAll(".lang button").forEach(function(b) { b.setAttribute("aria-pressed", b.dataset.lang === l); });
+    document.getElementById("submitBtn").textContent = t("submit");
+    var s = document.getElementById("formStatus");
+    s.className = ""; s.textContent = "";
+    try { localStorage.setItem("lang", l); } catch (e) {}
   }
+
+  document.querySelectorAll(".lang button").forEach(function(b) {
+    b.addEventListener("click", function() { applyLang(b.dataset.lang); });
+  });
+
+  (function init() {
+    var saved = null;
+    try { saved = localStorage.getItem("lang"); } catch (e) {}
+    var guess = /^(nb|nn|no)\b/i.test(navigator.language || "") ? "no" : "en";
+    applyLang(saved === "no" || saved === "en" ? saved : guess);
+  })();
 
   //GOOGLE APPS SCRIPT DEPLOYMENT:
   var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzm5pFu2DYbt1BhA13MVUmMmDJQF1nihbDtU3eiK2i5YfpiFT1tz5w34xbRfQNj5jk/exec";
 
+  function val(id) { return document.getElementById(id).value.trim(); }
+
   async function submitForm() {
-    var btn      = document.getElementById("submitBtn");
-    var statusEl = document.getElementById("formStatus");
+    var btn = document.getElementById("submitBtn");
+    var sexEl = document.querySelector('input[name="sex"]:checked');
 
-    //city:    document.getElementById("city").value.trim(),
     var data = {
-      sex:     selectedSex,
-      seeking: document.getElementById("seeking").value,
-      age:     document.getElementById("age").value.trim(),
-
-      height:  document.getElementById("height").value.trim(),
-      weight:  document.getElementById("weight").value.trim(),
-      q1:      document.getElementById("q1").value.trim(),
-      q2:      document.getElementById("q2").value.trim(),
-      q3:      document.getElementById("q3").value.trim(),
-      q4:      document.getElementById("q4").value.trim(),
-      q5:      document.getElementById("q5").value.trim(),
-      q6:      document.getElementById("q6").value.trim(),
-      q7:      document.getElementById("q7").value.trim(),
-      q8:      document.getElementById("q7").value.trim(),
-      email:   document.getElementById("email").value.trim()
+      sex:     sexEl ? sexEl.value : "",
+      seeking: val("seeking"),
+      age:     val("age"),
+      height:  val("height"),
+      weight:  val("weight"),
+      q1: val("q1"), q2: val("q2"), q3: val("q3"), q4: val("q4"),
+      q5: val("q5"), q6: val("q6"), q7: val("q7"), q8: val("q8"),
+      email:   val("email"),
+      lang:    lang
     };
 
-    var errs = [];
-    if (!data.sex)     errs.push("your sex");
-    if (!data.seeking) errs.push("who you're open to meeting");
-    if (!data.age || parseInt(data.age) < 18) errs.push("a valid age (18+)");
-    //if (!data.city)    errs.push("your city");
-    if (!data.height)  errs.push("your height");
-    if (!data.weight)  errs.push("your weight");
-    if (!data.q1)      errs.push("why ? loneliness is not the right answer");
-    if (!data.q2)      errs.push("Why did you like him ? ");
-    if (!data.q3)      errs.push("Effort ? ? ");
-    if (!data.q4)      errs.push("your humor ?");
-    if (!data.q5)      errs.push("favourite book ?");
-    if (!data.q6)      errs.push("a dealbreaker");
-    if (!data.q7)      errs.push("describe her");
-    if (!data.q8)      errs.push("describe you");
-    if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errs.push("a valid email");
+    var missing = [];
+    if (!data.sex)     missing.push("sex");
+    if (!data.seeking) missing.push("seeking");
+    if (!data.age || parseInt(data.age, 10) < 18) missing.push("age");
+    if (!data.height)  missing.push("height");
+    if (!data.weight)  missing.push("weight");
+    ["q1","q2","q3","q4","q5","q6","q7","q8"].forEach(function(k) { if (!data[k]) missing.push(k); });
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) missing.push("email");
 
-    if (errs.length) {
-      showStatus("err", "Please fill in: " + errs.join(", ") + ".");
+    if (missing.length) {
+      showStatus("err", t("errPrefix") + missing.map(function(k) { return t("errs")[k]; }).join(", ") + ".");
       return;
     }
 
     btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span>Sending...';
-    statusEl.className = "status-banner";
+    btn.textContent = t("sending");
+    document.getElementById("formStatus").className = "";
 
     try {
       var res  = await fetch(SCRIPT_URL, {
@@ -465,33 +394,24 @@
       var json = await res.json().catch(function() { return { success: true }; });
 
       if (json.success !== false) {
-        showStatus("ok", "Profile received! We'll be in touch as soon as we find your match.");
-        clearForm();
+        showStatus("ok", t("ok"));
+        document.getElementById("profileForm").reset();
       } else {
         throw new Error(json.message || "Unknown error");
       }
     } catch (err) {
-      showStatus("err", "Something went wrong: " + err.message + ". Please try again.");
+      showStatus("err", t("fail").replace("{m}", err.message));
     } finally {
       btn.disabled = false;
-      btn.innerHTML = "Send my profile &#10022;";
+      btn.textContent = t("submit");
     }
   }
 
   function showStatus(type, msg) {
     var el = document.getElementById("formStatus");
     el.textContent = msg;
-    el.className = "status-banner " + type;
+    el.className = type;
     el.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  }
-
-  function clearForm() {
-    ["seeking","age","height","weight","q1","q2","q3","q4","q5","q6","q7","q8", "email"].forEach(function(id) {
-      document.getElementById(id).value = "";
-    });
-    document.querySelectorAll(".gender-btn").forEach(function(b) { b.classList.remove("active"); });
-    selectedSex = "";
-    document.getElementById("sex").value = "";
   }
 </script>
 </body>
