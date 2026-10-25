@@ -44,9 +44,9 @@
   }
   /* picture layer: raise --img-brightness to lighten it further (1 = original) */
   .hero::before {
-    content: ""; position: absolute; inset: 0; z-index: -2;
+    content: ""; position: absolute; inset: -30px; z-index: -2;
     background: url("image.jpg") center / cover no-repeat;
-    filter: brightness(var(--img-brightness, 1.45)) saturate(1.1);
+    filter: blur(var(--img-blur, 4px)) brightness(var(--img-brightness, 1.45)) saturate(1.1);
   }
   /* readability overlay on top of the picture */
   .hero::after {
