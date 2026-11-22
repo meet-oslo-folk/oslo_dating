@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>OsloMeet</title>
+<title>Oslo Set-up</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -131,7 +131,7 @@
 <body>
 
 <nav>
-  <div class="logo">Oslo<span>Meet</span></div>
+  <div class="logo">Oslo <span>Set-up</span></div>
   <div class="lang" role="group" aria-label="Språk / Language">
     <button type="button" data-lang="no" aria-pressed="true">NO</button>
     <button type="button" data-lang="en" aria-pressed="false">EN</button>
@@ -167,6 +167,11 @@
 
     <form class="form-card" id="profileForm" novalidate onsubmit="submitForm(); return false;">
       <div id="formStatus" role="status"></div>
+
+      <div class="field">
+        <label for="name" data-i18n="name"></label>
+        <input type="text" id="name" name="name" autocomplete="name" data-i18n-ph="namePh"/>
+      </div>
 
       <fieldset class="field">
         <legend data-i18n="sex"></legend>
@@ -205,6 +210,7 @@
       <div class="field"><label for="q6" data-i18n="q6"></label><input type="text" id="q6" name="q6" data-i18n-ph="q6Ph"/></div>
       <div class="field"><label for="q7" data-i18n="q7"></label><textarea id="q7" name="q7" data-i18n-ph="honestPh"></textarea></div>
       <div class="field"><label for="q8" data-i18n="q8"></label><textarea id="q8" name="q8" data-i18n-ph="honestPh"></textarea></div>
+      <div class="field"><label for="q9" data-i18n="q9"></label><textarea id="q9" name="q9" data-i18n-ph="q9Ph"></textarea></div>
 
       <div class="field">
         <label for="photo" data-i18n="photo"></label>
@@ -229,7 +235,7 @@
 
 <footer>
   <p class="contact"><span data-i18n="contact"></span> <a href="mailto:meet.oslo.folk@gmail.com">meet.oslo.folk@gmail.com</a></p>
-  <p><strong>OsloMeet</strong> &middot; <span data-i18n="footer"></span></p>
+  <p><strong>Oslo Set-up</strong> &middot; <span data-i18n="footer"></span></p>
 </footer>
 
 <script>
@@ -248,7 +254,7 @@
       p3h: "Trygt og gratis", p3: "Et menneske følger opp hver match. Det koster ingenting å delta. Dersom det skulle gjelde: Vi skal gi guttene ideer til dater og råd om hvordan de bør behandle jentene på date :).",
       joinLabel: "Finn din match",
       joinT1: "Ta", joinT2: "steget",
-      joinP: "Svar så åpent og konkret du kan, på norsk eller engelsk. Vi tar kontakt når vi har funnet noen som er verdt å møte.",
+      joinP: "Svar så åpent og konkret du kan, på norsk eller engelsk, mer detaljer vil gi deg bedre matcher. Vi tar kontakt når vi har funnet noen som er verdt å møte.",
       sex: "Kjønn", female: "Kvinne", male: "Mann",
       seeking: "Jeg er åpen for å møte", select: "Velg …", women: "Kvinner", men: "Menn", both: "Begge",
       age: "Alder", agePh: "f.eks. 24",
@@ -260,13 +266,16 @@
       q3: "Hvilken innsats la du ned i å bli kjent med din siste date?",
       q3Ph: "«Så hva studerer du?» «…» «Kult»",
       q4: "Hvilken positiv side ved deg kan du ikke vise frem på en datingprofil?",
-      q4Ph: "Min udødelige kjærlighet til mat og bøker",
+      q4Ph: "Min udødelige kjærlighet til mat og bøker ...",
       q5: "Hvorfor er favorittboken, -filmen eller -mediet ditt favoritten din?",
-      q5Ph: "…",
+      q5Ph: "Death of a Salesman, i stadig større grad ser jeg Willy Loman i meg selv og andre.",
       q6: "Hva er en aboslutt dealbreaker for deg?",
       q6Ph: "Jeg dater ikke folk uten jobb as",
       q7: "Hvilke egenskaper leter du etter hos en partner?",
       q8: "Hvilke egenskaper kan du tilby som en partner?",
+      q9: "Hvilke små ting i hverdagen setter du virkelig pris på? og hvorfor?",
+      q9Ph: "Uventede samtaler",
+      name: "Navn", namePh: "Fornavn eller kallenavn",
       honestPh: "Vær så nøyaktig og ærlig som du kan",
       photo: "Bilde (valgfritt)", photoNote: "Last opp ett bilde av deg (JPG eller PNG).", photoRemove: "Fjern bilde",
       photoErr: "Kunne ikke bruke bildet. Velg en JPG- eller PNG-fil under 15 MB, eller fjern det.",
@@ -276,7 +285,7 @@
       contact: "Har du spørsmål? Send en e-post til",
       footer: "© 2026 · Gratis og drevet av frivillige · Vis tålmodighet med andre.",
       errPrefix: "Vennligst fyll inn: ",
-      errs: { sex: "kjønn", seeking: "hvem du er åpen for å møte", age: "en gyldig alder (18+)", height: "høyde",
+      errs: { name: "navn", q9: "ideell første date", sex: "kjønn", seeking: "hvem du er åpen for å møte", age: "en gyldig alder (18+)", height: "høyde",
               q1: "hvorfor du ønsker et forhold", q2: "forrige romantiske interesse", q3: "innsats på forrige date",
               q4: "din positive side", q5: "favorittmedie", q6: "et brudd på avtalen", q7: "hva du leter etter", q8: "hva du kan tilby",
               email: "en gyldig e-postadresse" },
@@ -297,7 +306,7 @@
       p3h: "Safe and free", p3: "A real person follows up every match. It costs nothing to take part. We'll give the guys date ideas and advice on how to treat the girls on dates :)",
       joinLabel: "Find your match",
       joinT1: "Take the", joinT2: "leap",
-      joinP: "Answer as openly and specifically as you can, in Norwegian or English. We'll get in touch when we find someone worth meeting.",
+      joinP: "Answer as openly and specifically as you can, in Norwegian or English, more details will give you a better match. We'll get in touch when we find someone worth meeting.",
       sex: "Sex", female: "Female", male: "Male",
       seeking: "I'm open to meeting", select: "Select …", women: "Women", men: "Men", both: "Both",
       age: "Age", agePh: "e.g. 24",
@@ -309,14 +318,17 @@
       q3: "What effort did you put into getting to know your last date?",
       q3Ph: "\"So what do you study?\" \"…\" \"Cool\"",
       q4: "What positive side of you couldn't you show on a dating profile?",
-      q4Ph: "My immortal spirit and love of food and books",
+      q4Ph: "My immortal spirit and love of food and books.",
       q5: "Why is your favourite book, movie or media your favourite?",
-      q5Ph: "…",
+      q5Ph: "Death of a Salesman, More and more I see Willy Loman in myself and others",
       q6: "What's a dealbreaker you won't compromise on?",
       q6Ph: "I don't date people without a job",
       q7: "What qualities do you look for in a partner?",
       q8: "What qualities can you offer as a partner?",
-      honestPh: "Be as precise and honest as you can",
+      q9: "What small things in everyday life do you really enjoy? and why?",
+      q9Ph: "Any conversation about a pleasant topic, for they leave the people involved in better light",
+      name: "Name", namePh: "First name or nickname",
+      honestPh: "Be as precise and honest as you can, more details will give you a better match.",
       photo: "Photo (optional)", photoNote: "Upload one photo of yourself (JPG or PNG).", photoRemove: "Remove photo",
       photoErr: "Couldn't use the photo. Choose a JPG or PNG file under 15 MB, or remove it.",
       email: "Email address", emailPh: "name@example.com",
@@ -325,7 +337,7 @@
       contact: "For any questions, send an email to",
       footer: "© 2026 · Free and run by volunteers · Be patient with others.",
       errPrefix: "Please fill in: ",
-      errs: { sex: "your sex", seeking: "who you're open to meeting", age: "a valid age (18+)", height: "your height",
+      errs: { name: "your name", q9: "favourite part of everyday life", sex: "your sex", seeking: "who you're open to meeting", age: "a valid age (18+)", height: "your height",
               q1: "why you seek a relationship", q2: "your last romantic interest", q3: "effort on your last date",
               q4: "your positive side", q5: "your favourite media", q6: "a dealbreaker", q7: "what you look for", q8: "what you offer",
               email: "a valid email address" },
@@ -422,23 +434,40 @@
     var btn = document.getElementById("submitBtn");
     var sexEl = document.querySelector('input[name="sex"]:checked');
 
+    // Short, fixed English column names (same whichever language the site is in).
+    // `fields` keeps this order, so the sheet/email table reads top to bottom.
     var data = {
-      sex:     sexEl ? sexEl.value : "",
-      seeking: val("seeking"),
-      age:     val("age"),
-      height:  val("height"),
-      q1: val("q1"), q2: val("q2"), q3: val("q3"), q4: val("q4"),
-      q5: val("q5"), q6: val("q6"), q7: val("q7"), q8: val("q8"),
+      name:    val("name"),
+      subject: val("name"),          // mail subject = the person's name
       email:   val("email"),
-      lang:    lang
+      lang:    lang,
+      fields: {
+        "Name":                   val("name"),
+        "Sex":                    sexEl ? sexEl.value : "",
+        "Open to meeting":        val("seeking"),
+        "Age":                    val("age"),
+        "Height (cm)":            val("height"),
+        "Why a relationship":     val("q1"),
+        "Last romantic interest": val("q2"),
+        "Effort on last date":    val("q3"),
+        "Hidden positive side":   val("q4"),
+        "Favourite media & why":  val("q5"),
+        "Dealbreaker":            val("q6"),
+        "Looking for":            val("q7"),
+        "Offering":               val("q8"),
+        "Perfect first date":     val("q9"),
+        "Email":                  val("email")
+      }
     };
+    var f = data.fields;
 
     var missing = [];
-    if (!data.sex)     missing.push("sex");
-    if (!data.seeking) missing.push("seeking");
-    if (!data.age || parseInt(data.age, 10) < 18) missing.push("age");
-    if (!data.height)  missing.push("height");
-    ["q1","q2","q3","q4","q5","q6","q7","q8"].forEach(function(k) { if (!data[k]) missing.push(k); });
+    if (!data.name)    missing.push("name");
+    if (!f["Sex"])     missing.push("sex");
+    if (!f["Open to meeting"]) missing.push("seeking");
+    if (!f["Age"] || parseInt(f["Age"], 10) < 18) missing.push("age");
+    if (!f["Height (cm)"]) missing.push("height");
+    ["q1","q2","q3","q4","q5","q6","q7","q8","q9"].forEach(function(k) { if (!val(k)) missing.push(k); });
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) missing.push("email");
 
     if (missing.length) {
